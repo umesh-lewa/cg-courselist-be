@@ -44,8 +44,9 @@ const upload = multer({
 //const upload = multer({ storage: storage, fileFilter: fileFilter});
 
 //Upload route
-router.post('/upload', upload.array('files'), async (req, res, next) => {
+router.post('/upload', upload.any('files'), async (req, res, next) => {
 
+    console.log("Uploaded File");
 
     try {
 
