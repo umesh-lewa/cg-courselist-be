@@ -26,11 +26,11 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     fileFilter,
     storage: multerS3({
-        acl: "public-read",
+        //acl: "public-read",
         s3,
         bucket: 'cg-courselist',
         metadata: function (req, file, cb) {
-            cb(null, { fieldName: "TESTING_DigiPrex" });
+            cb(null, { fieldName: "TESTING_Cg_Courselist" });
         },
         key: function (req, file, cb) {
             const name = file.originalname.split(".")[0]
