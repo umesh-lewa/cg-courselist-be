@@ -97,6 +97,32 @@ router.post('/uploadDetails', async (req, res, next) => {
     }
 });
 
+router.delete('/deleteDetails', async (req, res, next) => {
+
+    try {
+
+        let coursename = req.body.CourseName;
+
+        var sql = "DELETE FROM courses WHERE NAME = '"+coursename+"'";
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("1 record deleted");
+            res.json({
+                "stat":"200",
+                "message":"Successfully deleted Course Details"
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.json({
+            "stat":"500",
+            "message": 'Error in deleting course details',
+
+        });
+    }
+});
+
 router.get('/all', async (req, res, next) => {
 
     try {
