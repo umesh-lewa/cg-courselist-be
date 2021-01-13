@@ -29,31 +29,39 @@ router.post('/login', async function (req, res, next) {
     con.connect(function(err) {
       if (err) throw err;
       console.log("JawsDB Connected!");
+      
       con.query('SELECT * FROM user WHERE EMAILID = '+'"'+email+'"', function (err, result, fields) {
         if (err) throw err;
         console.log(result);
+
         if(result.length == 0){
+          con.end();
           return res.json({
             "stat": "failure",
             "message": "User does not exist"
           });
+
         }
         if(result[0].PASSWORD == password){
+          con.end();
           return res.json({
             "stat": "200",
             "message": "Login Success"
           });
         }else{
+          con.end();
           return res.json({
             "stat": "failure",
             "message": "Wrong password"
           });
         }
       });
+
     });
 
   } catch (err) {
     console.log(err);
+    con.end();
     res.json({
       "stat": "500",
       "message": "Error in Logging In User"
