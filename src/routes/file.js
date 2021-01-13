@@ -39,6 +39,8 @@ const upload = multer({
     }),
 });
 
+var mysql = require('mysql'); 
+
 var con = mysql.createConnection({
     host: "hwr4wkxs079mtb19.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     user: "d98xthx8poc64jy3",
@@ -84,13 +86,41 @@ router.post('/uploadDetails', async (req, res, next) => {
                 "message":"Successfully inserted Course Details"
             });
         });
-        
+
     } catch (error) {
         console.error(error);
         res.json({
             "stat":"500",
             "message": 'Error in inserting course details',
 
+        });
+    }
+});
+
+router.get('/all', async (req, res, next) => {
+
+    try {
+
+        let author = req.body.AuthorName;
+        let description = req.body.Description;
+        let courseKey = req.body.CourseKey;
+
+        var sql = "SELECT * FROM courses";
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("1 record inserted");
+            res.json({
+                "stat":"200",
+                "message":"Successfully fetched Course Details",
+                "result":result
+            });
+        });
+        
+    } catch (error) {
+        console.error(error);
+        res.json({
+            "stat":"500",
+            "message": 'Error in fetching course details',
         });
     }
 });
