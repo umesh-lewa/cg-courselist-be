@@ -39,12 +39,17 @@ const upload = multer({
     }),
 });
 
-
+var con = mysql.createConnection({
+    host: "hwr4wkxs079mtb19.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user: "d98xthx8poc64jy3",
+    password: "lmalu9tjd0d4y13o",
+    database: "xpmpzb871xctqyfk"
+});
 
 //const upload = multer({ storage: storage, fileFilter: fileFilter});
 
 //Upload route
-router.post('/upload', upload.array('files',1), async (req, res, next) => {
+router.post('/upload', upload.array('files', 1), async (req, res, next) => {
 
     console.log("Uploaded File");
 
@@ -61,5 +66,34 @@ router.post('/upload', upload.array('files',1), async (req, res, next) => {
         console.error(error);
     }
 });
+
+router.post('/uploadDetails', async (req, res, next) => {
+
+    try {
+
+        let author = req.body.AuthorName;
+        let description = req.body.Description;
+        let courseKey = req.body.CourseKey;
+
+        var sql = "INSERT INTO courses (AUTHOR, DESCRIPTION, NAME) VALUES ('"+author+"', '"+description+"'"+courseKey+"')";
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("1 record inserted");
+            res.json({
+                "stat":"200",
+                "message":"Successfully inserted Course Details"
+            });
+        });
+        
+    } catch (error) {
+        console.error(error);
+        res.json({
+            "stat":"500",
+            "message": 'Error in inserting course details',
+
+        });
+    }
+});
+
 
 module.exports = router;
