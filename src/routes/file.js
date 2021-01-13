@@ -77,7 +77,7 @@ router.post('/uploadDetails', async (req, res, next) => {
         let description = req.body.Description;
         let courseKey = req.body.CourseKey;
 
-        var sql = "INSERT INTO courses (AUTHOR, DESCRIPTION, NAME) VALUES ('"+author+"', '"+description+"'"+courseKey+"')";
+        var sql = "INSERT INTO courses (AUTHOR, DESCRIPTION, NAME) VALUES ('"+author+"', '"+description+"', '"+courseKey+"')";
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");
