@@ -5,10 +5,12 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var fileRouter = require('./routes/file');
 var authRouter = require('./routes/auth');
+var bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/', indexRouter);

@@ -26,7 +26,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     fileFilter,
     storage: multerS3({
-        //acl: "public-read",
+        acl: "public-read",
         s3,
         bucket: 'cg-courselist',
         metadata: function (req, file, cb) {
@@ -44,7 +44,7 @@ const upload = multer({
 //const upload = multer({ storage: storage, fileFilter: fileFilter});
 
 //Upload route
-router.post('/upload', upload.any('files'), async (req, res, next) => {
+router.post('/upload', upload.array('files',1), async (req, res, next) => {
 
     console.log("Uploaded File");
 
