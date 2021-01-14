@@ -9,8 +9,8 @@ const multerS3 = require("multer-s3");
 const s3 = new aws.S3();
 
 aws.config.update({
-    secretAccessKey: "AKIAJAXL4KKUGRQD4XWA",
-    accessKeyId: "o6XvbbKBT+7eWUtMZ0q9QT/DnUwPCcYdSVyneQfY",
+    secretAccessKey: "",
+    accessKeyId: "",
     region: "us-east-1",
 });
 
@@ -51,6 +51,7 @@ var con = mysql.createConnection({
 //const upload = multer({ storage: storage, fileFilter: fileFilter});
 
 //Upload route
+/*
 router.post('/upload', upload.array('files', 1), async (req, res, next) => {
 
     console.log("Uploaded File");
@@ -68,7 +69,7 @@ router.post('/upload', upload.array('files', 1), async (req, res, next) => {
         console.error(error);
     }
 });
-
+*/
 router.post('/uploadDetails', async (req, res, next) => {
 
     try {
