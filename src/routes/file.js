@@ -39,7 +39,7 @@ const upload = multer({
     }),
 });
 
-var mysql = require('mysql'); 
+var mysql = require('mysql');
 
 var con = mysql.createConnection({
     host: "hwr4wkxs079mtb19.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
@@ -77,24 +77,25 @@ router.post('/uploadDetails', async (req, res, next) => {
         let description = req.body.Description;
         let courseKey = req.body.CourseKey;
 
-        var sql = "INSERT INTO courses (AUTHOR, DESCRIPTION, NAME) VALUES ('"+author+"', '"+description+"', '"+courseKey+"')";
+        var sql = "INSERT INTO courses (AUTHOR, DESCRIPTION, NAME) VALUES ('" + author + "', '" + description + "', '" + courseKey + "')";
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");
             res.json({
-                "stat":"200",
-                "message":"Successfully inserted Course Details"
+                "stat": "200",
+                "message": "Successfully inserted Course Details"
             });
         });
 
     } catch (error) {
         console.error(error);
         res.json({
-            "stat":"500",
+            "stat": "500",
             "message": 'Error in inserting course details',
 
         });
     }
+
 });
 
 router.delete('/deleteDetails', async (req, res, next) => {
@@ -103,20 +104,20 @@ router.delete('/deleteDetails', async (req, res, next) => {
 
         let coursename = req.body.CourseName;
 
-        var sql = "DELETE FROM courses WHERE NAME = '"+coursename+"'";
+        var sql = "DELETE FROM courses WHERE NAME = '" + coursename + "'";
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("1 record deleted");
             res.json({
-                "stat":"200",
-                "message":"Successfully deleted Course Details"
+                "stat": "200",
+                "message": "Successfully deleted Course Details"
             });
         });
 
     } catch (error) {
         console.error(error);
         res.json({
-            "stat":"500",
+            "stat": "500",
             "message": 'Error in deleting course details',
 
         });
@@ -136,19 +137,92 @@ router.get('/all', async (req, res, next) => {
             if (err) throw err;
             console.log("1 record inserted");
             res.json({
-                "stat":"200",
-                "message":"Successfully fetched Course Details",
-                "result":result
+                "stat": "200",
+                "message": "Successfully fetched Course Details",
+                "result": result
             });
         });
-        
+
     } catch (error) {
         console.error(error);
         res.json({
-            "stat":"500",
+            "stat": "500",
             "message": 'Error in fetching course details',
         });
     }
+
+});
+
+router.post('/addComment', async (req, res, next) => {
+
+    try {
+
+        let coursename = req.body.CourseName;
+        let comment = req.body.Comment;
+
+        let prevComments = "";
+        let newComments = "";
+
+        var sql = "SELECT COMMENTS FROM courses WHERE NAME = '" + coursename + "'";
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+
+            console.log("result : " + JSON.stringify(result));
+            prevComments = result[0].COMMENTS;
+            console.log("prevComments : "+prevComments);
+            newComments = prevComments + comment + "-";
+            console.log("newComments : "+newComments);
+
+            var sql1 = "UPDATE courses SET COMMENTS = '"+newComments+"' WHERE NAME = '"+coursename+"'";
+            con.query(sql1, function (err, result) {
+                if (err) throw err;
+                console.log(result.affectedRows + " record(s) updated");
+            });
+
+            res.json({
+                "stat": "200",
+                "message": "Successfully added new comment",
+                "result": result
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.json({
+            "stat": "500",
+            "message": 'Error in adding new comment',
+
+        });
+    }
+
+});
+
+
+router.get('/getComments/:CourseName', async (req, res, next) => {
+
+    try {
+
+        let coursename = req.params.CourseName;
+
+        var sql = "SELECT COMMENTS FROM courses WHERE NAME = '"+coursename+"'";
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("result : "+result);
+            res.json({
+                "stat": "200",
+                "message": "Successfully fetched comment Details",
+                "result": result
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.json({
+            "stat": "500",
+            "message": 'Error in fetching comment details',
+        });
+    }
+
 });
 
 
