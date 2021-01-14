@@ -204,7 +204,7 @@ router.get('/getComments/:CourseName', async (req, res, next) => {
 
         let coursename = req.params.CourseName;
 
-        var sql = "SELECT COMMENTS FROM courses WHERE NAME = '"+coursename+"'";
+        var sql = "SELECT COMMENTS FROM courses WHERE NAME = '"+"courses/"+coursename+"'";
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("result : "+result);
